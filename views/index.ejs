@@ -11,22 +11,18 @@
 				var socket = io.connect();
 
 				let username = prompt('Please select a username');
-				console.log(username);
 
 				socket.on("new_user", (data) => {
 					var messages = data.messages;
-					console.log(messages)
 					for (let i = 0; i < messages.length; i++){
 						$("#messages").append("<h4>" + messages[i].user + ": " + messages[i].message + "</h4>");
 					}
 				})
 
 				$("button[name='submit_message']").click( () => {
-					console.log(username)
 					let message = $("textarea").val()
 					$("textarea").val("")
 					$("#messages").append("<h4>"+ username + ": " + message + "</h4>")
-					console.log(message)
 					socket.emit("new_message", {user: username, message: message})
 				})
 
@@ -44,7 +40,7 @@
 			<div id="group_chat">
 				<h2>Conversation</h2>
 				<div id="messages">
-
+					<!-- Previous and new messages will appear here -->
 				</div>
 				<textarea name="new_message" rows="1" cols="80"></textarea><button type="submit" name="submit_message">Send</button>
 			</div>

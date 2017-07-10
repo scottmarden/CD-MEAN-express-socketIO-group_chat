@@ -31,18 +31,14 @@ function addToMessages(msg){
 }
 
 io.sockets.on("connection", (socket) => {
-	console.log(messages)
 	console.log("Socket, online!");
 	console.log(socket.id);
 	socket.emit("new_user", {messages: messages})
 
 	socket.on("new_message", (data) => {
-		console.log(data);
 		var msg = {'user': data.user, 'message': data.message};
 		addToMessages(msg);
 		let str = data.user + ": " + data.message;
-		console.log(str);
 		socket.broadcast.emit("add_message", {new_message: str});
-		return messages;
 	})
 });
