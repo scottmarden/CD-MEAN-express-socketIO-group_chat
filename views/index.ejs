@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Group Chat</title>
+		<link rel="stylesheet" href="/stylesheets/style.css" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript">
+			$(document).ready( () => {
+				var socket = io.connect();
+
+				let username = prompt('Please select a username');
+				console.log(username);
+
+				socket.on("new_user", (data) => {
+					var messages = data.messages;
+					console.log(messages)
+					for (let i = 0; i < messages.length; i++){
+						$("#messages").append("<h4>" + messages[i].user + ": " + messages[i].message + "</h4>");
+					}
+				})
+
+				$("button[name='submit_message']").click( () => {
+					console.log(username)
+					let message = $("textarea").val()
+					$("textarea").val("")
+					$("#messages").append("<h4>"+ username + ": " + message + "</h4>")
+					console.log(message)
+					socket.emit("new_message", {user: username, message: message})
+				})
+
+				socket.on("add_message", (data) => {
+					$("#messages").append("<h4>" + data.new_message + "</h4>");
+				})
+			});
+		</script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="header">
+				<h1>Group Chat</h1>
+			</div>
+			<div id="group_chat">
+				<h2>Conversation</h2>
+				<div id="messages">
+
+				</div>
+				<textarea name="new_message" rows="1" cols="80"></textarea><button type="submit" name="submit_message">Send</button>
+			</div>
+
+
+		</div>
+	</body>
+</html>

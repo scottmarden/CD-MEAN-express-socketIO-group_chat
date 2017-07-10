@@ -1,0 +1,16 @@
+body {
+	background-color: grey;
+}
+
+#wrapper {
+	background-color: forestgreen;
+}
+
+#group_chat h2, h3{
+	border: 1px solid black;
+	margin: 5px 20px;
+}
+#group_chat textarea {
+	margin: 5px 20px;
+	vertical-align: top;
+}
